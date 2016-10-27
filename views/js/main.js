@@ -447,12 +447,15 @@ var resizePizzas = function(size) {
     return dx;
   }
 
+  //---IMPROVED---
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+    var pizzaContVal = document.getElementsByClassName("randomPizzaContainer");
+    var j = pizzaContVal.length;
+    var dx = determineDx(pizzaContVal[0],size);
+    var newwidth = (pizzaContVal[0].offsetWidth + dx) + 'px';
+    for (var i = 0; i < j; i++){
+      pizzaContVal[i].style.width = newwidth;
     }
   }
 
@@ -496,16 +499,24 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
+//---IMPROVED---
 // Moves the sliding background pizzas based on scroll position
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-
+/*
   var items = document.querySelectorAll('.mover');
   for (var i = 0; i < items.length; i++) {
     var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
+*/
+var items = document.getElementsByClassName('mover');
+var top = document.body.scrollTop / 1250;
+for (var i = 0, phase, len = items.length; i < len; i++) {
+ phase = Math.sin(top + i % 5);
+ items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+}
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
